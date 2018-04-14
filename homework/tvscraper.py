@@ -11,9 +11,13 @@ from requests.exceptions import RequestException
 from contextlib import closing
 from bs4 import BeautifulSoup
 
+# import re for searching the tree for regular expressions
+import re
+
 TARGET_URL = "http://www.imdb.com/search/title?num_votes=5000,&sort=user_rating,desc&start=1&title_type=tv_series"
 BACKUP_HTML = 'tvseries.html'
 OUTPUT_CSV = 'tvseries.csv'
+
 
 
 def extract_tvseries(dom):
@@ -27,12 +31,78 @@ def extract_tvseries(dom):
     - Runtime (only a number!)
     """
 
-    # ADD YOUR CODE HERE TO EXTRACT THE ABOVE INFORMATION ABOUT THE
-    # HIGHEST RATED TV-SERIES
-    # NOTE: FOR THIS EXERCISE YOU ARE ALLOWED (BUT NOT REQUIRED) TO IGNORE
-    # UNICODE CHARACTERS AND SIMPLY LEAVE THEM OUT OF THE OUTPUT.
+    #create an empty list to put in lists of content of each serie
+    series_contentlists = []
 
-    return []   # REPLACE THIS LINE AS WELL AS APPROPRIATE
+    # get all the content from 'Highest Rated TV Series With At Least 5000 Votes'
+    #iterate over each item to get each serie_item
+    for serie_item in dom.find_all('div', class_='lister-item-content'):
+
+        #create an empty list for each serie_item[Title,Rating,Genre,Actors,Runtime]
+        serie_content = []
+
+        #find title, if none title then '-'
+        serie_title = serie_item.h3.a.text
+        if not serie_title:
+            serie_title = '-'
+        else:
+            # append title to serie_content
+            serie_content.append(serie_title)
+
+            # find rating, if none rating then '-'
+            serie_rating = serie_item.div.div.strong.text
+            if not serie_rating:
+                serie_rating = '-'
+
+            # append rating to serie_content
+            serie_content.append(serie_rating)
+
+
+        # find genre, if none genre then '-'
+        serie_genre = serie_item.p.find('span', class_='genre').text
+        if not serie_genre:
+            serie_genre = '-'
+        else:
+            serie_genre = serie_genre.strip()
+
+            # append title to serie_content
+            serie_content.append(serie_genre)
+
+        #find actors, if none then '-'
+        serie_actors = serie_item.find_all(class_= "", href = re.compile('/name/'))
+
+        if not serie_actors:
+            serie_actors = '-'
+        else:
+
+            # make empty list for actors
+            list_actors = []
+
+            #append each actor to list_actors
+            for actor in serie_actors:
+                list_actors.append(actor.text)
+
+            #make string of all the actors
+            str_actors = ', '
+            serie_actors_str = str_actors.join(list_actors)
+
+            # append actors to serie_content
+            serie_content.append(serie_actors_str)
+
+        #find rundtime, if none then '-'
+        serie_runtime = serie_item.p.find('span', class_='runtime').text
+        if not serie_runtime:
+            serie_runtime = '-'
+        else:
+
+            #remove min from string
+            serie_runtime = serie_runtime.strip(' min')
+
+            #append runtime to serie_content
+            serie_content.append(serie_runtime)
+        series_contentlists.append(serie_content)
+
+    return series_contentlists
 
 
 def save_csv(outfile, tvseries):
@@ -42,7 +112,8 @@ def save_csv(outfile, tvseries):
     writer = csv.writer(outfile)
     writer.writerow(['Title', 'Rating', 'Genre', 'Actors', 'Runtime'])
 
-    # ADD SOME CODE OF YOURSELF HERE TO WRITE THE TV-SERIES TO DISK
+    for serie_list in tvseries:
+        writer.writerow(serie_list)
 
 
 def simple_get(url):

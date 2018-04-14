@@ -100,6 +100,8 @@ def extract_tvseries(dom):
 
             #append runtime to serie_content
             serie_content.append(serie_runtime)
+
+        #append serie_content to series_contentlists to make list of lists
         series_contentlists.append(serie_content)
 
     return series_contentlists

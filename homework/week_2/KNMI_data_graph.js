@@ -3,50 +3,30 @@
 * This script loads a local .csv file of the weather of jan 1 1993 till
 * jan 1 1994. The data is represented by a graph
 *
-*Dataprocessing: Line graph with Javascript
+* Dataprocessing: Line graph with Javascript
 *
 * Jacob Jasper (10650385)
 */
 
-// var knmi = "KNMI_19931231.txt"
+
+// Dit werkt niet dus heb ik het uitgecommend, wel geprobeerd maar hij geeft graphXcurrent
+// error die ik niet snap
+
+// var xhr = new XMLHttpRequest(),
+//     method = "GET",
+//     url = "https://github.com/jacobjjasper/dataprocessing/blob/master/homework/week_2/KNMI_19931231.txt";
 //
-// var xhr = new XMLHttpRequest();
-//
+// xhr.open(method, url, true);
 // xhr.onreadystatechange = function () {
-//   if(this.readyState === 4 && xhr.status === 200){
-//     drawGraph(this.responseText);
+//   if(xhr.readyState === 4 && xhr.status === 200) {
+//     drawGraph(xhr.responseText);
 //   }
 // };
-// xhr.open('GET', knmi, true);
 // xhr.send();
-
-// var file = "KNMI_19931231.txt";
 //
-// var xhr = new XMLHttpRequest();
-// xhr.onreadystatechange = function() {
-//     if (this.readyState == 4 && this.status == 200){
-//       // send to another function because the data is local and not global
-//        drawGraph(this.responseText)
-//     }
-// };
-// xhr.open("GET", 'KNMI_19931231.txt', true);
-// xhr.send();
-
-var xhr = new XMLHttpRequest(),
-    method = "GET",
-    file = "KNMI_19931231.txt";
-
-xhr.open(method, file, true);
-xhr.onreadystatechange = function () {
-  if(xhr.readyState === 4 && xhr.status === 200) {
-    drawGraph(xhr.responseText);
-  }
-};
-xhr.send();
-
-function drawGraph(xhr){
-  // let knmi = document.getElementById("rawdata").value;
-  knmi = xhr.split("\n");
+// function drawGraph(xhr){
+  let knmi = document.getElementById("rawdata").value;
+  knmi = knmi.split("\n");
   let dates = [];
   let temps = [];
   for (var i = 1; i < knmi.length; i++){
@@ -155,25 +135,4 @@ function drawGraph(xhr){
     graphYcurrent = graphY;
     graphX = graphX + graphXplus;
   }
-}
-// //rectangle
-// ctx.fillStyle = 'rgb(200,0,0)'; // sets the color to fill in the rectangle with
-// ctx.fillRect(10, 10, 55, 50);   // draws the rectangle at position 10, 10 with a width of 55 and a height of 50
-//
-// //line
-// ctx.beginPath();
-// ctx.moveTo(400, 400);
-// ctx.lineTo(1200, 400);
-// ctx.strokeStyle = "yellow";
-// ctx.stroke();
-//
-// //circle
-// ctx.beginPath();
-// ctx.arc(300, 300, 50, 0, Math.PI *2, false);
-// ctx.strokeStyle = "blue";
-// ctx.stroke();
-//
-// //text
-// ctx.font = '48px serif';
-// ctx.rotate(45 * Math.PI / 180); // degree * Math.PI / 180
-// ctx.fillText('Hello world', 600, 100);
+//}

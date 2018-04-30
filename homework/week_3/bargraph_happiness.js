@@ -1,3 +1,13 @@
+/**
+* This script loads a local .json file of the happiness scores of Western
+*European country's of the year 2016. The data is represented by a barchart.
+*
+* Dataprocessing: Building your first visualization in D3.js
+*
+* Jacob Jasper (10650385)
+*/
+
+
 d3.json("2016_hardcoded.json", function(data){
 
   // creating information elements of barchart

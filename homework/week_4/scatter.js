@@ -100,21 +100,21 @@ function make_scatter(dataset) {
               .append("g")
               .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    // // creating tip box to show value (dit werkt niet bij mij, begrijp
-    //alleen niet waarom. hij zegt hele tijd dat d3.tip niet bestaat, terwijl ik
+    // creating tip box to show value (dit werkt niet bij mij, begrijp
+    // alleen niet waarom. hij zegt hele tijd dat d3.tip niet bestaat, terwijl ik
     // wel die library heb)
-    // var tip = d3.tip()
-    //             .data(json)
-    //             .attr('class', 'd3-tip')
-    //             .offset([-20, 0])
-    //             .html(function(d) {
-    //               return  "<strong>Country:</strong> <span style='color:white'>" + d["country"]
-    //           + "</span>" + "<br>" + "GDP per capita index: " + d["gdp"] + "<br>" +
-    //       "Labour underutilization rate (%): " + d["labour uti"] + "<br>" + "Unemployment rate (%):"
-    //       + d["unemployment"]});
-    //             });
-    //
-    // svg.call(tip);
+    var tip = d3.tip()
+                // .data(json)
+                .attr('class', 'd3-tip')
+                .offset([-20, 0])
+                .html(function(d) {
+                  console.log(d);
+                  return  "<strong>Country:</strong> <strong>" + d["country"]
+              + "</strong>" + "<br>" + "GDP per capita index: " + d["gdp"] + "<br>" +
+          "Labour underutilization rate (%): " + d["labour uti"] + "<br>" + "Unemployment rate (%):"
+          + d["unemployment"]});
+
+    svg.call(tip);
 
     //creating scale for 2015
     var x_scale = d3.scaleLinear()
@@ -212,21 +212,8 @@ function make_scatter(dataset) {
         })
         .style("stroke-width", 1)
         .style("stroke", "black")
-        // .on("mouseover", tip.show) //deze doet het dus niet
-        // .on("mouseout", tip.hide);
-
-    dot.append("text")
-    .text(function(d) {
-        return d["country"]
-    })
-    .attr("x", function(d) {
-      return x_scale(d["unemployment"]);  // Returns scaled location of x
-    })
-    .attr("y", function(d) {
-      return y_scale(d["labour uti"]);  // Returns scaled circle y
-   })
-    .style("font-size", "11px")
-    .style("color", "pink");
+        .on("mouseover", tip.show) //deze doet het dus niet
+        .on("mouseout", tip.hide);
 
     //make array for colors and names of bars of legend
     var colors = [{"name": "<= 80", "color": "red"}, {"name": "81 - 90", "color": "orange"},

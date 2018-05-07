@@ -100,11 +100,8 @@ function make_scatter(dataset) {
               .append("g")
               .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    // creating tip box to show value (dit werkt niet bij mij, begrijp
-    // alleen niet waarom. hij zegt hele tijd dat d3.tip niet bestaat, terwijl ik
-    // wel die library heb)
+    // creating tip box to show data
     var tip = d3.tip()
-                // .data(json)
                 .attr('class', 'd3-tip')
                 .offset([-20, 0])
                 .html(function(d) {

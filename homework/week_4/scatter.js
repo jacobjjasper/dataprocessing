@@ -70,7 +70,7 @@ function make_scatter(dataset) {
       }
       //store countrys in array
       countrys.push(dataset.structure.dimensions.observation[0].values[i].name);
-
+      console.log(countrys[i]);
       //make array of dicts
       my_obj = {"country": countrys[i], "gdp": gdp_per_capita_index[i],
                 "labour uti": labour_underutilisation_rate[i], "unemployment":
@@ -209,7 +209,7 @@ function make_scatter(dataset) {
         })
         .style("stroke-width", 1)
         .style("stroke", "black")
-        .on("mouseover", tip.show) //deze doet het dus niet
+        .on("mouseover", tip.show)
         .on("mouseout", tip.hide);
 
     //make array for colors and names of bars of legend

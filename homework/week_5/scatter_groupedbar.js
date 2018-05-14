@@ -21,9 +21,9 @@ window.onload = function() {
   .defer(d3.request, gdp_unemployment_labour_2016)
   .defer(d3.request, jobs_2015)
   .defer(d3.request, jobs_2016)
-  .awaitAll(doFunction);
+  .awaitAll(page_transition);
 
-function doFunction(error, response) {
+function page_transition(error, response) {
   if (error) throw error;
 
   //store parsed JSON in variable
@@ -37,19 +37,17 @@ function doFunction(error, response) {
   //ik krijg het niet voor elkaar de svg van de bar te verwijderen en vervolgens te updaten???
   //update graph between 2015 and 2016
   d3.select("#data_2015 button").on("click", function() {
-    d3.select("svg").remove();
-    d3.select("svg1").remove();
+    d3.selectAll("svg").remove();
+    // d3.select("svg").remove("class", "scatter");
+    // d3.select("svg").remove("class", "bar_svg");
     d3.select("body").transition(make_scatter(data__gdp_2015, data_jobs_2015))
     });
   d3.select("#data_2016 button").on("click", function() {
-    d3.select("svg").remove();
-    d3.select("svg1").remove();
+    d3.selectAll("svg").remove();
+    // d3.select("svg").remove("class", "scatter");
+    // d3.select("svg").remove("class", "bar_svg");
     d3.select("body").transition(make_scatter(data_gdp_2016, data_jobs_2016))
     });
-  d3.select(".dot").on("click", function() {
-    d3.select("svg1").remove();
-  });
-
 
   };
 };
@@ -179,8 +177,8 @@ function convert_into_json(dataset1, dataset2) {
   }
 
   var scale_values = {"labour_max": Math.max(...labour_underutilisation_rate),
-  "labour_min": Math.min(...labour_underutilisation_rate), "unemployment_max":
-  Math.max(...unemployment_rate), "unemployment_min": Math.min(...unemployment_rate),
+  "labour_min": 0, "unemployment_max":
+  Math.max(...unemployment_rate), "unemployment_min": 0,
   "gdp_max": Math.max(...gdp_per_capita_index), "gdp_min":
   Math.min(...gdp_per_capita_index)}
   return [json_final, scale_values];
@@ -201,6 +199,7 @@ function make_scatter(dataset1, dataset2) {
   //create SVG element
   var svg = d3.select("body")
             .append("svg")
+            .attr("class", "scatter")
             .attr("width", (w + margin.left + margin.right))
             .attr("height", (h + margin.top + margin.bottom))
             .append("g")
@@ -320,8 +319,9 @@ function make_scatter(dataset1, dataset2) {
       .on("mouseover", tip.show)
       .on("mouseout", tip.hide)
       .on("click", function(d) {
-        d3.select("svg1").remove();
-        return make_bar(d)
+        d3.selectAll(".bar_svg")
+          .remove();
+        return make_bar(d);
       });
 
     svg.append("text")
@@ -380,8 +380,6 @@ function make_scatter(dataset1, dataset2) {
 
 function make_bar(object) {
 
-  d3.select("svg1").remove();
-
   //adjust object to use for the group bar graph
   var bar_object =  [{"name": "total", "employmentrate":
       (object["employment"]/10), "lt unemployment": object["longterm unemployment"],
@@ -402,13 +400,14 @@ function make_bar(object) {
   //create SVG element
   var svg1 = d3.select("body")
             .append("svg")
+            .attr("class", "bar_svg")
             .attr("width", (w + margin.left + margin.right))
             .attr("height", (h + margin.top + margin.bottom))
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   svg1.append("text")
-    .attr("class", "scatter_title")
+    .attr("class", "bar_title")
     .attr("x", w/2)
     .attr("y", -50)
     .text("Grouped bar graph of the employmentrate (red), \
@@ -438,7 +437,8 @@ function make_bar(object) {
       bar_object[0]["personal earnings"], bar_object[1]["personal earnings"],
       bar_object[2]["personal earnings"]];
 
-  var y_min = Math.min(...scale_values);
+  // var y_min = Math.min(...scale_values);
+  var y_min = 0;
   var y_max = Math.max(...scale_values);
 
   //creating scale for 2015
@@ -459,7 +459,13 @@ function make_bar(object) {
   svg1.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + (h) + ")")
-    .call(x_axis);
+    .call(x_axis)
+    .selectAll("text")
+    .attr("y", 0)
+    .attr("x", 9)
+    .attr("dy", ".35em")
+    .attr("transform", "rotate(40)")
+    .style("text-anchor", "start");
 
     //append label for x axis
     svg1.append("text")
@@ -480,28 +486,10 @@ function make_bar(object) {
     .attr("class", "y axis")
     .call(y_axis);
 
-  //deze doet het niet maar weet alleen niet waarom??? daarom for loop gebruikt
-  // var padding = 20;
-  //
-  // svg.selectAll("rect")
-  //     .data(bar_object)
-  //     .enter()
-  //     .append("rect")
-  //     .attr("class", "rect_employ")
-  //     .attr("x", function(d, i) {
-  //       return (100 + (i * 200))
-  //     .attr("y", function(d) {
-  //       return y_scale(d["employmentrate"])
-  //     })
-  //     .attr("width", 50)
-  //     .attr("height", function(d) {
-  //       h - y_scale(d["employmentrate"])
-  //     });
-
-
-  //hier snap ik niet dat bij personal earnings de kleinste waarde geen bar geeft???? heel raar
+  //create grouped bar charts
   for (var i = 0; i < 3; i++) {
-    console.log(bar_object[i]["lt unemployment"]);
+    console.log(bar_object[i]["personal earnings"]);
+
     // creating tip box to show data
     var tip = d3.tip()
                 .attr('class', 'd3-tip')
@@ -514,43 +502,46 @@ function make_bar(object) {
     svg1.call(tip);
 
 
-      // create a bar (or rect) for every datum
       svg1.append("rect")
           .data(bar_object)
           .attr("class", "bar")
-          .attr("x",(100 + (i * 200)))
+          .attr("x",(50+ (i * 250)))
           .attr("y", y_scale(bar_object[i]["employmentrate"]))
           .attr("width", 50) // determine bar width
           .attr("height", h - y_scale(bar_object[i]["employmentrate"]))
           .style("fill", "red")
-          .on('mouseover', tip.show) // ensure tip appears and disappears
+          .on('mouseover', tip.show)
           .on('mouseout', tip.hide);
 
 
-      // create a bar (or rect) for every datum
       svg1.append("rect")
           .data(bar_object)
           .attr("class", "bar")
-          .attr("x", (150 + (i * 200)))
+          .attr("x", (100 + (i * 250)))
           .attr("y", y_scale(bar_object[i]["personal earnings"]))
           .attr("width", 50) // determine bar width
           .attr("height", h - y_scale(bar_object[i]["personal earnings"]))
           .style("fill", "blue")
-          .on('mouseover', tip.show) // ensure tip appears and disappears
+          .on('mouseover', tip.show)
           .on('mouseout', tip.hide);
 
-
-      // create a bar (or rect) for every datum
       svg1.append("rect")
           .data(bar_object)
           .attr("class", "bar")
-          .attr("x", (200 + (i * 200)))
+          .attr("x", (150 + (i * 250)))
           .attr("y", y_scale(bar_object[i]["lt unemployment"]))
           .attr("width", 50) // determine bar width
           .attr("height", h - y_scale(bar_object[i]["lt unemployment"]))
           .style("fill", "green")
-          .on('mouseover', tip.show) // ensure tip appears and disappears
+          .on('mouseover', tip.show)
           .on('mouseout', tip.hide);
+
+      svg1.append("text")
+          .attr("x", (125 + (i * 250)))
+          .attr("y", h + 25)
+          .style("text-anchor", "middle")
+          .style("font-size", 20)
+          .text(bar_object[i]["name"]);
     };
 
     //make array for colors and names of bars of legend

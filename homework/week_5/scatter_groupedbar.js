@@ -206,7 +206,7 @@ function make_scatter(dataset1, dataset2) {
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   // creating tip box to show data
-  var tip = d3.tip()
+  var tool_tip = d3.tip()
               .attr('class', 'd3-tip')
               .offset([-20, 0])
               .html(function(d) {
@@ -214,9 +214,10 @@ function make_scatter(dataset1, dataset2) {
                 return  "<strong>Country:</strong> <strong>" + d["country"]
             + "</strong>" + "<br>" + "GDP per capita index: " + d["gdp"] + "<br>" +
         "Labour underutilization rate (%): " + d["labour uti"] + "<br>" + "Unemployment rate (%):"
-        + d["unemployment"]});
+        + d["unemployment"]})
+              .style("background-color", "white");
 
-  svg.call(tip);
+  svg.call(tool_tip);
 
   //creating scale for 2015
   var x_scale = d3.scaleLinear()
@@ -316,8 +317,8 @@ function make_scatter(dataset1, dataset2) {
       })
       .style("stroke-width", 1)
       .style("stroke", "black")
-      .on("mouseover", tip.show)
-      .on("mouseout", tip.hide)
+      .on("mouseover", tool_tip.show)
+      .on("mouseout", tool_tip.hide)
       .on("click", function(d) {
         d3.selectAll(".bar_svg")
           .remove();
@@ -417,19 +418,6 @@ function make_bar(object) {
     .style("text-decoration", "underline")
     .style("font-style", "italic")
     .style("font-weight", "bold");
-
-  // creating tip box to show data
-  var tip = d3.tip()
-              .attr('class', 'd3-tip')
-              .offset([-20, 0])
-              .html(function(d) {
-                console.log(d);
-                return  "<strong>Inequality:</strong> <strong>" + d["name"]
-            + "</strong>" + "<br>" + "Employment rate (%): " + d["employmentrate"] + "<br>" +
-        "Long term unemployment rate (%): " + d["lt unemployment"] + "<br>" +
-        "Personal earnings:" + d["personal earnings"]});
-
-  svg1.call(tip);
 
   var scale_values = [bar_object[0]["employmentrate"], bar_object[1]["employmentrate"],
       bar_object[2]["employmentrate"], bar_object[0]["lt unemployment"],

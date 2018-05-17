@@ -15,100 +15,135 @@
   <script src="scatter_groupedbar.js"></script>
 </head>
 <body>
-<div class="jumbotron text-center">
-  <h1>Jacob Jasper, 10650385</h1>
-    <p>D3 Linked Views, for the data sources click
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#top">Dataprocessing D3 linked views</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li><a href="#intro">Home</a></li>
+        <li><a href="#indicator">Indicator descriptions</a></li>
+        <li><a href="#visualisations">Visualisations</a></li>
+        <li><a href="#story">Storytelling</a></li>
+        <li><a href="#design">Design choices</a></li>
+      </ul>
+    </div>
+  </nav>
+<div class="jumbotron text-center" id="top">
+  <h1>Dataprocessing D3 Linked Views</h1>
+    <p style="font-style:italic; ">By Jacob Jasper, 10650385</p>
+    <p style="font-style:italic; font-size: 12px"> For the data sources click
     <a href="https://www.oecd-ilibrary.org/economics/data/detailed-national-accounts-sna-2008-or-sna-1993/household-indicators_0ae0b1c2-en"> here</a>
     and
     <a href="https://stats.oecd.org/Index.aspx?DataSetCode=BLI"> here</a></h1>
     </p>
 </div>
-
-<div class="container">
-  <div class="row">
-    <div class="col-sm-4">
-      <h3>GDP per capita index (colored and adjusted in size)</h3>
-      <p>
-        GDP per capita index (colored and adjusted size): This indicator shows Gross Domestic Product (GDP),
-        adjusted for price changes, per member of the population, indexed to 2007
-        Q1=100. Because GDP growth can merely reflect a larger population, it is
-        important to account for this when analysing people’s material well-being.
-        This indicator shows how much real GDP per capita has grown since the
-        beginning of 2007 (right before the start of the financial crisis of 2007-2008).
-    </p>
-    </div>
-    <div class="col-sm-4">
-      <h3>Unemployment rate (x-axis)</h3>
-      <p>
-        Unemployment rate is the number of unemployed people as
-        a percentage of the labour force, where the latter consists of the unemployed
-        plus those in paid or self-employment. Unemployed people are those who report
-        that they are without work, that they are available for work and that they have
-        taken active steps to find work in the last four weeks. When unemployment is
-        high, some people become discouraged and stop looking for work; they are then
-        excluded from unemployment and the labour force. This implies that the
-        unemployment rate may fall, or stop rising, even though there has been no
-        underlying improvement in the labour market. The unemployment rate is an
-        important indicator of economic and social well-being.
-    </p>
-    </div>
-    <div class="col-sm-4">
-      <h3>Labour underutilization rate (y-axis)</h3>
-      <p>
-        The broader labour underutilisation rate includes
-        in the numerator the unemployed, the marginally attached (i.e. persons not
-        in the labour force who did not look for work during the past four weeks
-        but who wish and are available to work) and the underemployed (full-time
-        workers working less than usual during the survey reference week for
-        economic reasons and part-time workers who wanted but could not find
-        full-time work), expressed as a ratio of the labour force.
-    </p>
+<div class="container" id="intro">
+  <br>
+  <br>
+  <h1 class="title"> Introduction</h1>
+</div>
+<div class="container" id="indicator">
+  <br>
+  <br>
+  <h1 class="title"> Indicator descriptions</h1>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <h3 style="">GDP per capita index (colored and adjusted in size)</h3>
+        <p>
+          GDP per capita index (colored and adjusted size): This indicator shows Gross Domestic Product (GDP),
+          adjusted for price changes, per member of the population, indexed to 2007
+          Q1=100. Because GDP growth can merely reflect a larger population, it is
+          important to account for this when analysing people’s material well-being.
+          This indicator shows how much real GDP per capita has grown since the
+          beginning of 2007 (right before the start of the financial crisis of 2007-2008).
+      </p>
+      </div>
+      <div class="col-sm-4">
+        <h3>Unemployment rate (x-axis)</h3>
+        <p>
+          Unemployment rate is the number of unemployed people as
+          a percentage of the labour force, where the latter consists of the unemployed
+          plus those in paid or self-employment. Unemployed people are those who report
+          that they are without work, that they are available for work and that they have
+          taken active steps to find work in the last four weeks. When unemployment is
+          high, some people become discouraged and stop looking for work; they are then
+          excluded from unemployment and the labour force. This implies that the
+          unemployment rate may fall, or stop rising, even though there has been no
+          underlying improvement in the labour market. The unemployment rate is an
+          important indicator of economic and social well-being.
+      </p>
+      </div>
+      <div class="col-sm-4">
+        <h3>Labour underutilization rate (y-axis)</h3>
+        <p>
+          The broader labour underutilisation rate includes
+          in the numerator the unemployed, the marginally attached (i.e. persons not
+          in the labour force who did not look for work during the past four weeks
+          but who wish and are available to work) and the underemployed (full-time
+          workers working less than usual during the survey reference week for
+          economic reasons and part-time workers who wanted but could not find
+          full-time work), expressed as a ratio of the labour force.
+      </p>
+      </div>
     </div>
   </div>
-</div>
-<div class="container">
-  <div class="row">
-    <div class="col-sm-4">
-      <h3>Employment rate</h3>
-      <p>
-        It is the number of employed persons aged 15 to 64 over the population
-        of the same age. Employed people are those aged 15 or more who report
-        that they have worked in gainful employment for at least one hour in the
-        previous week, as defined by the International Labour Organization – ILO.
-      </p>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <h3>Employment rate</h3>
+        <p>
+          It is the number of employed persons aged 15 to 64 over the population
+          of the same age. Employed people are those aged 15 or more who report
+          that they have worked in gainful employment for at least one hour in the
+          previous week, as defined by the International Labour Organization – ILO.
+        </p>
+      </div>
+      <div class="col-sm-4">
+        <h3>Long-term unemployment rate</h3>
+        <p>
+          This indicator refers to the number of persons who have been unemployed
+          for one year or more as a percentage of the labour force (the sum of
+          employed and unemployed persons). Unemployed persons are defined as those
+          who are currently not working but are willing to do so and actively
+          searching for work.
+        </p>
+      </div>
+      <div class="col-sm-4">
+        <h3>Personal earnings</h3>
+        <p>
+          This indicator refers to the average annual wages per full-time
+          equivalent dependent employee, which are obtained by dividing the
+          national-accounts-based total wage bill by the average number of
+          employees in the total economy, which is then multiplied by the ratio
+          of average usual weekly hours per full-time employee to average usually
+          weekly hours for all employees. It considers the employees’ gross
+          remuneration, that is, the total before any deductions are made by the
+          employer in respect of taxes, contributions of employees to social
+          security and pension schemes, life insurance premiums, union dues and
+          other obligations of employees.
+        </p>
+      </div>
     </div>
-    <div class="col-sm-4">
-      <h3>Long-term unemployment rate</h3>
-      <p>
-        This indicator refers to the number of persons who have been unemployed
-        for one year or more as a percentage of the labour force (the sum of
-        employed and unemployed persons). Unemployed persons are defined as those
-        who are currently not working but are willing to do so and actively
-        searching for work.
-      </p>
-    </div>
-    <div class="col-sm-4">
-      <h3>Personal earnings</h3>
-      <p>
-        This indicator refers to the average annual wages per full-time
-        equivalent dependent employee, which are obtained by dividing the
-        national-accounts-based total wage bill by the average number of
-        employees in the total economy, which is then multiplied by the ratio
-        of average usual weekly hours per full-time employee to average usually
-        weekly hours for all employees. It considers the employees’ gross
-        remuneration, that is, the total before any deductions are made by the
-        employer in respect of taxes, contributions of employees to social
-        security and pension schemes, life insurance premiums, union dues and
-        other obligations of employees.
-      </p>
-    </div>
-  </div>
 </div>
-<div id="data_2015">
-  <button>2015</button>
 </div>
-<div id="data_2016">
-<button>2016</button>
+<div class="container" id="visualisations">
+  <br>
+  <br>
+  <h1 class="title"> Visualisations</h1>
+  <button type="button" id="data_2015" class="btn">data 2015</button>
+  <button type="button" id="data_2016" class="btn">data 2016</button>
 </div>
-</body>
+<div class="container" id="story">
+  <br>
+  <br>
+  <h1 class="title"> Storytelling</h1>
+</div>
+<div class="container" id="design">
+  <br>
+  <br>
+  <h1 class="title"> Design choices</h1>
+</div>
+  </body>
 </html>

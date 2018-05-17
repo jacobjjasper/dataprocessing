@@ -16,4 +16,16 @@
     border: 0px;
     border-radius: 8px;
     pointer-events: none;
+
+}
+.btn {
+  background-color: blue;
+  outline-color: black;
+  outline-width: thick;
+  color: white;
+}
+
+.title {
+  font-weight: bold;
+  text-decoration: underline;
 }

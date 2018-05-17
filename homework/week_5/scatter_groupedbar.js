@@ -34,18 +34,13 @@ function page_transition(error, response) {
 
   d3.select("body").transition(make_scatter(data__gdp_2015, data_jobs_2015))
 
-  //ik krijg het niet voor elkaar de svg van de bar te verwijderen en vervolgens te updaten???
   //update graph between 2015 and 2016
-  d3.select("#data_2015 button").on("click", function() {
+  d3.select("#data_2015").on("click", function() {
     d3.selectAll("svg").remove();
-    // d3.select("svg").remove("class", "scatter");
-    // d3.select("svg").remove("class", "bar_svg");
     d3.select("body").transition(make_scatter(data__gdp_2015, data_jobs_2015))
     });
-  d3.select("#data_2016 button").on("click", function() {
+  d3.select("#data_2016").on("click", function() {
     d3.selectAll("svg").remove();
-    // d3.select("svg").remove("class", "scatter");
-    // d3.select("svg").remove("class", "bar_svg");
     d3.select("body").transition(make_scatter(data_gdp_2016, data_jobs_2016))
     });
 
@@ -192,12 +187,12 @@ function make_scatter(dataset1, dataset2) {
 
 
   //width and height
-  var w = 800;
+  var w = 600;
   var h = 600;
-  var margin = { top: 100, right: 350, bottom: 100, left: 250};
+  var margin = { top: 100, right: 250, bottom: 100, left: 400};
 
   //create SVG element
-  var svg = d3.select("body")
+  var svg = d3.select("#visualisations")
             .append("svg")
             .attr("class", "scatter")
             .attr("width", (w + margin.left + margin.right))
@@ -327,12 +322,12 @@ function make_scatter(dataset1, dataset2) {
 
     svg.append("text")
       .attr("class", "scatter_title")
-      .attr("x", w/2)
+      .attr("x", -400)
       .attr("y", -50)
       .text("Scatterplot of the unemployment rate, labour \
       underutilization rate and GDP per capita index (2007 = 100) of the \
-      years 2015 and 2016 of European country's ")
-      .style("text-anchor", "middle")
+      years 2015 and 2016 of European countries ")
+      .style("text-anchor", "start")
       .style("text-decoration", "underline")
       .style("font-style", "italic")
       .style("font-weight", "bold");
@@ -348,12 +343,12 @@ function make_scatter(dataset1, dataset2) {
                   .enter()
                   .append("g")
                   .attr("class", "legend")
-                  .attr("transform", function(d, i) { return "translate(0," + (250 + i * 20) + ")"; })
+                  .attr("transform", function(d, i) { return "translate(0," + (60 + i * 20) + ")"; })
 
   svg.append("text")
     .attr("class", "legend_title")
-    .attr("x", w + 40)
-    .attr("y", 245)
+    .attr("x", -300)
+    .attr("y", 50)
     .text("GDP per capita index (2007 = 100)")
     .style("text-anchor", "start")
     .style("font-weight", "bold");
@@ -361,7 +356,7 @@ function make_scatter(dataset1, dataset2) {
 
   legend.append("text")
         .attr("class", "legend_text")
-        .attr("x", w + 100)
+        .attr("x", -240)
         .attr("y", 15)
         .text(function(d){
           return d["name"]
@@ -371,7 +366,7 @@ function make_scatter(dataset1, dataset2) {
 
   legend.append("rect")
         .attr("class", "legend_bars")
-        .attr("x", w + 40)
+        .attr("x", -300)
         .attr("width", 60)
         .attr("height", 18)
         .style("fill", function(d){
@@ -394,12 +389,12 @@ function make_bar(object) {
   console.log(bar_object);
 
   //width and height
-  var w = 800;
+  var w = 600;
   var h = 600;
-  var margin = { top: 100, right: 350, bottom: 100, left: 250};
+  var margin = { top: 100, right: 250, bottom: 100, left: 400};
 
   //create SVG element
-  var svg1 = d3.select("body")
+  var svg1 = d3.select("#visualisations")
             .append("svg")
             .attr("class", "bar_svg")
             .attr("width", (w + margin.left + margin.right))
@@ -409,12 +404,12 @@ function make_bar(object) {
 
   svg1.append("text")
     .attr("class", "bar_title")
-    .attr("x", w/2)
+    .attr("x", -400)
     .attr("y", -50)
     .text("Grouped bar graph of the employmentrate (red), \
     the personal earnings (blue) and the long term unemploymentrate (green) \
     of " + object["country"])
-    .style("text-anchor", "middle")
+    .style("text-anchor", "start")
     .style("text-decoration", "underline")
     .style("font-style", "italic")
     .style("font-weight", "bold");
@@ -432,15 +427,15 @@ function make_bar(object) {
   //creating scale for 2015
   var x_scale = d3.scaleLinear()
                   .domain(bar_object)
-                  .range([0, w]);
+                  .range([0, w+ 180]);
 
   var y_scale = d3.scaleLinear()
                   .domain([y_min, y_max])
                   .range([h, 0]);
 
-                  //creating variable for x axis
-                  var x_axis = d3.axisBottom()
-                                .scale(x_scale);
+  //creating variable for x axis
+  var x_axis = d3.axisBottom()
+                .scale(x_scale);
 
 
   //append x axis to canvas and class
@@ -459,7 +454,7 @@ function make_bar(object) {
     svg1.append("text")
       .attr("class", "label")
       .attr("transform", "translate(0," + (h) + ")")
-      .attr("x", w)
+      .attr("x", w + 175)
       .attr("y", 40)
       .style("text-anchor", "end")
       .text("Inequality");
@@ -542,12 +537,12 @@ function make_bar(object) {
                     .enter()
                     .append("g")
                     .attr("class", "legend")
-                    .attr("transform", function(d, i) { return "translate(0," + (250 + i * 20) + ")"; })
+                    .attr("transform", function(d, i) { return "translate(0," + (60 + i * 20) + ")"; })
 
     svg1.append("text")
       .attr("class", "legend_title")
-      .attr("x", w + 40)
-      .attr("y", 245)
+      .attr("x", -400)
+      .attr("y", 50)
       .text("Legend grouped bar graph")
       .style("text-anchor", "start")
       .style("font-weight", "bold");
@@ -555,7 +550,7 @@ function make_bar(object) {
 
     legend.append("text")
           .attr("class", "legend_text")
-          .attr("x", w + 100)
+          .attr("x", -340)
           .attr("y", 15)
           .text(function(d){
             return d["name"]
@@ -565,7 +560,7 @@ function make_bar(object) {
 
     legend.append("rect")
           .attr("class", "legend_bars")
-          .attr("x", w + 40)
+          .attr("x", -400)
           .attr("width", 60)
           .attr("height", 18)
           .style("fill", function(d){

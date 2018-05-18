@@ -1,15 +1,19 @@
 /**
 * This script loads a API's from a dataset and converts its data (GDP per capita
-* index, labour utilization and unemploymentrate) into a scatterplot.
+* index, labour utilization and unemploymentrate) into a scatterplot. Besides that,
+* it will create a linked visualisation from the scatterplot to a grouped barchart
+* to represent the employmentrate, the personal earnings and the long term unemploymentrate
+* of a clicked country.
 *....
 *
-* Dataprocessing: D3 Scatterplot
+* Dataprocessing: D3 Linked visualisations
 *
 * Jacob Jasper (10650385)
 */
 
 window.onload = function() {
 
+  //load API
   var gdp_unemployment_labour_2015 = "https://stats.oecd.org/SDMX-JSON/data/HH_DASH/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+NLD+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR.RGDP_INDEX+UNEMPRATE+LAB_UR6.A/all?startTime=2015&endTime=2015&dimensionAtObservation=allDimensions"
   var gdp_unemployment_labour_2016 = "https://stats.oecd.org/SDMX-JSON/data/HH_DASH/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+NLD+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR.RGDP_INDEX+UNEMPRATE+LAB_UR6.A/all?startTime=2016&endTime=2016&dimensionAtObservation=allDimensions"
   var jobs_2015 = "https://stats.oecd.org/SDMX-JSON/data/BLI2015/AUT+BEL+CZE+DNK+EST+FIN+FRA+DEU+GRC+HUN+ISL+IRL+ITA+NLD+NOR+POL+PRT+SVK+SVN+ESP+SWE+CHE+TUR+GBR.JE_EMPL+JE_LTUR+JE_PEARN.L.TOT+MN+WMN/all?&dimensionAtObservation=allDimensions"
@@ -26,12 +30,13 @@ window.onload = function() {
 function page_transition(error, response) {
   if (error) throw error;
 
-  //store parsed JSON in variable
+  //store parsed API in JSON in variable
   var data__gdp_2015 = JSON.parse(response[0].responseText);
   var data_gdp_2016 = JSON.parse(response[1].responseText);
   var data_jobs_2015 = JSON.parse(response[2].responseText);
   var data_jobs_2016 = JSON.parse(response[3].responseText);
 
+  //make sure there is a visualisation at start
   d3.select("body").transition(make_scatter(data__gdp_2015, data_jobs_2015))
 
   //update graph between 2015 and 2016
@@ -131,12 +136,13 @@ function convert_into_json(dataset1, dataset2) {
       countrys_gdp.push(dataset1.structure.dimensions.observation[0].values[i].name);
       countrys_jobs.push(dataset2.structure.dimensions.observation[0].values[i].name);
 
-      //make array of dicts
+      //make array of objects for GDP
       var my_obj_gdp = {"country": countrys_gdp[i], "gdp": gdp_per_capita_index[i],
                 "labour uti": labour_underutilisation_rate[i], "unemployment":
                 unemployment_rate[i]};
       json_gdp.push(my_obj_gdp);
 
+      //make array of objects for Jobs
       var my_obj_jobs = {"country": countrys_jobs[i], "employment": employmentrate[i],
       "employment men": employmentrate_men[i], "employment women":
       employmentrate_women[i], "longterm unemployment": lt_unem[i],
@@ -147,6 +153,7 @@ function convert_into_json(dataset1, dataset2) {
     json_jobs.push(my_obj_jobs);
   }
 
+  //Fuse both arrays of objects to one array of dicts
   for (let i =0; i < 24; i ++) {
     for (let j = 0; j < 24; j++) {
       if (json_gdp[i]["country"] === json_jobs[j]["country"]) {
@@ -171,6 +178,7 @@ function convert_into_json(dataset1, dataset2) {
     (per_earnings[i]/10000)
   }
 
+  //make scale values for scatterplot
   var scale_values = {"labour_max": Math.max(...labour_underutilisation_rate),
   "labour_min": 0, "unemployment_max":
   Math.max(...unemployment_rate), "unemployment_min": 0,
@@ -181,6 +189,7 @@ function convert_into_json(dataset1, dataset2) {
 
 function make_scatter(dataset1, dataset2) {
 
+  //get converted data and store in variable
   var values = convert_into_json(dataset1, dataset2);
   var complete_json = values[0];
   var scale_values = values[1];
@@ -212,6 +221,7 @@ function make_scatter(dataset1, dataset2) {
         + d["unemployment"]})
               .style("background-color", "white");
 
+  //call tip box
   svg.call(tool_tip);
 
   //creating scale for 2015
@@ -273,7 +283,7 @@ function make_scatter(dataset1, dataset2) {
                .data(complete_json)
                .enter();
 
-
+    //make scatterplot datapoints
      dot.append("circle")
      .attr("class", "dot")
 
@@ -320,6 +330,7 @@ function make_scatter(dataset1, dataset2) {
         return make_bar(d);
       });
 
+    //append title to scatterplot
     svg.append("text")
       .attr("class", "scatter_title")
       .attr("x", -400)
@@ -329,7 +340,6 @@ function make_scatter(dataset1, dataset2) {
       years 2015 and 2016 of European countries ")
       .style("text-anchor", "start")
       .style("text-decoration", "underline")
-      .style("font-style", "italic")
       .style("font-weight", "bold");
 
   //make array for colors and names of bars of legend
@@ -345,6 +355,7 @@ function make_scatter(dataset1, dataset2) {
                   .attr("class", "legend")
                   .attr("transform", function(d, i) { return "translate(0," + (60 + i * 20) + ")"; })
 
+  //append title to legend
   svg.append("text")
     .attr("class", "legend_title")
     .attr("x", -300)
@@ -353,7 +364,7 @@ function make_scatter(dataset1, dataset2) {
     .style("text-anchor", "start")
     .style("font-weight", "bold");
 
-
+  //append description of the visualisation of legend
   legend.append("text")
         .attr("class", "legend_text")
         .attr("x", -240)
@@ -363,7 +374,7 @@ function make_scatter(dataset1, dataset2) {
         })
         .style("text-anchor", "start");
 
-
+  //append color bars legend
   legend.append("rect")
         .attr("class", "legend_bars")
         .attr("x", -300)
@@ -386,8 +397,6 @@ function make_bar(object) {
           object["longterm unemployment women"], "personal earnings":
           (object["personal earnings women"]/10000)}];
 
-  console.log(bar_object);
-
   //width and height
   var w = 600;
   var h = 600;
@@ -402,6 +411,7 @@ function make_bar(object) {
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+  //append grouped barchart title
   svg1.append("text")
     .attr("class", "bar_title")
     .attr("x", -400)
@@ -411,9 +421,9 @@ function make_bar(object) {
     of " + object["country"])
     .style("text-anchor", "start")
     .style("text-decoration", "underline")
-    .style("font-style", "italic")
     .style("font-weight", "bold");
 
+  //make scale values grouped barchart
   var scale_values = [bar_object[0]["employmentrate"], bar_object[1]["employmentrate"],
       bar_object[2]["employmentrate"], bar_object[0]["lt unemployment"],
       bar_object[1]["lt unemployment"], bar_object[2]["lt unemployment"],
@@ -469,9 +479,8 @@ function make_bar(object) {
     .attr("class", "y axis")
     .call(y_axis);
 
-  //create grouped bar charts
+  //create grouped bar charts by means of iteration
   for (var i = 0; i < 3; i++) {
-    console.log(bar_object[i]["personal earnings"]);
 
     // creating tip box to show data
     var tip = d3.tip()
@@ -482,9 +491,10 @@ function make_bar(object) {
           "Long term unemployment rate (%): " + bar_object[i]["lt unemployment"] + "<br>" +
           "Personal earnings (/10.000$):" + bar_object[i]["personal earnings"]);
 
+    //call tip box
     svg1.call(tip);
 
-
+      //make bars for each variable
       svg1.append("rect")
           .data(bar_object)
           .attr("class", "bar")
@@ -519,6 +529,7 @@ function make_bar(object) {
           .on('mouseover', tip.show)
           .on('mouseout', tip.hide);
 
+      //append description group x-axis
       svg1.append("text")
           .attr("x", (125 + (i * 250)))
           .attr("y", h + 25)
@@ -539,6 +550,7 @@ function make_bar(object) {
                     .attr("class", "legend")
                     .attr("transform", function(d, i) { return "translate(0," + (60 + i * 20) + ")"; })
 
+    //append legend title
     svg1.append("text")
       .attr("class", "legend_title")
       .attr("x", -400)
@@ -547,7 +559,7 @@ function make_bar(object) {
       .style("text-anchor", "start")
       .style("font-weight", "bold");
 
-
+    //append information representation each color
     legend.append("text")
           .attr("class", "legend_text")
           .attr("x", -340)
@@ -557,7 +569,7 @@ function make_bar(object) {
           })
           .style("text-anchor", "start");
 
-
+    //append bar with each color variable
     legend.append("rect")
           .attr("class", "legend_bars")
           .attr("x", -400)

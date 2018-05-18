@@ -1,7 +1,7 @@
 /**
-*....
+* This a stylesheet for D3 Linked views website
 *
-* Dataprocessing: D3 Scatterplot
+* Dataprocessing: D3 Linked views
 *
 * Jacob Jasper (10650385)
 */
@@ -26,13 +26,27 @@
 }
 
 .title {
+  text-align:center;
+  color: red;
+  text-shadow: 0 -1px black;
   font-weight: bold;
   text-decoration: underline;
 }
 
 .jumbotron {
-  color: black;
-  text-shadow: -1px 0 red;
+  color: red;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
   background-image: url("foto4.jpg");
-  background-size: cover;
+
+/* Full height */
+height: 100%;
+
+/* Center and scale the image nicely */
+background-position:bottom;
+background-repeat: no-repeat;
+background-size: cover;
+}
+
+.bullets {
+  font-size: 20px;
 }

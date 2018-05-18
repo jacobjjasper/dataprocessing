@@ -1,3 +1,18 @@
+<!--
+* This html loads a API's from a dataset and converts its data (GDP per capita
+* index, labour utilization and unemploymentrate) into a scatterplot. Besides that,
+* it will create a linked visualisation from the scatterplot to a grouped barchart
+* to represent the employmentrate, the personal earnings and the long term unemploymentrate
+* of a clicked country.
+*....
+*
+* Dataprocessing: D3 Linked visualisations
+*
+* Jacob Jasper (10650385)
+*/
+-->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,18 +36,19 @@
         <a class="navbar-brand" href="#top">Dataprocessing D3 linked views</a>
       </div>
       <ul class="nav navbar-nav">
-        <li><a href="#intro">Home</a></li>
+        <li><a href="#top">Home</a></li>
+        <li><a href="#story">Storytelling</a></li>
         <li><a href="#indicator">Indicator descriptions</a></li>
         <li><a href="#visualisations">Visualisations</a></li>
-        <li><a href="#story">Storytelling</a></li>
         <li><a href="#design">Design choices</a></li>
+        <li><a href="#data">Dataset descriptions</a></li>
       </ul>
     </div>
   </nav>
 <div class="jumbotron text-center" id="top">
   <h1>Dataprocessing D3 Linked Views</h1>
     <p style="font-style:italic; font-size: 30px">By Jacob Jasper, 10650385</p>
-    <p style="font-style:italic; font-size: 20px"> For the data sources click
+    <p style="font-style:italic; font-size: 20px"> For the data sources of OECD click
     <a href="https://www.oecd-ilibrary.org/economics/data/detailed-national-accounts-sna-2008-or-sna-1993/household-indicators_0ae0b1c2-en"> here</a>
     and
     <a href="https://stats.oecd.org/Index.aspx?DataSetCode=BLI"> here</a></h1>
@@ -42,15 +58,128 @@
   <br>
   <br>
   <h1 class="title"> Introduction</h1>
+  <p>
+    In 2016, the population of Europe was estimated to be 741 million according to
+    the 2017 revision of the World Population Prospects[1], which is slightly more
+    than one-ninth of the world's population. A century ago, Europe had nearly a
+    quarter of the world's population.[217] The population of Europe has grown in
+    the past century, but in other areas of the world (in particular Africa and Asia)
+    the population has grown far more quickly.[218] Among the continents, Europe has
+    a relatively high population density, second only to Asia. Most of Europe is in
+    a mode of Sub-replacement fertility, which means that each new(-born) generation
+    is being less populous than the older. The most densely populated country in
+    Europe (and in the world) is the microstate of Monaco.
+  </p>
+  <p>
+    With the fall of communism in Central and Eastern Europe in 1991, the
+    post-socialist states began free market reforms: Poland, Hungary, and Slovenia
+    adopted them reasonably quickly, while Ukraine and Russia are still in the
+    process of doing so.
+  </p>
+  <p>
+    After East and West Germany were reunited in 1990, the economy of West Germany
+    struggled as it had to support and largely rebuild the infrastructure of East
+    Germany.
+  </p>
+  <p>
+    By the millennium change, the EU dominated the economy of Europe comprising
+    the five largest European economies of the time namely Germany, the United
+    Kingdom, France, Italy, and Spain. In 1999, 12 of the 15 members of the EU
+    joined the Eurozone replacing their former national currencies by the common
+    euro. The three who chose to remain outside the Eurozone were: the United
+    Kingdom, Denmark, and Sweden. The European Union is now the largest economy
+    in the world.
+  </p>
+  <p>
+    Figures released by Eurostat in 2009 confirmed that the Eurozone had gone into
+    recession in 2008. It impacted much of the region. In 2010, fears of
+    a sovereign debt crisis developed concerning some countries in Europe,
+    especially Greece, Ireland, Spain, and Portugal. As a result, measures
+    were taken, especially for Greece, by the leading countries of the Eurozone.
+    The EU-27 unemployment rate was 10.3% in 2012. For those aged 15–24 it was 22.4%
+    <a href="https://en.wikipedia.org/wiki/Europe#Economic_history">(Wikipedia, 2018).</a>
+  </p>
+  <p>
+    Knowing this, how did Europe perform the last few years? And are there any
+    differences between men and women? These questions will be answered on this
+    website with a scatterplot about the unemployment rate, labour underutilization
+    rate and GDP per capita index (2007 = 100) of the years 2015 and 2016. In
+    addition, there will be a grouped bargraph available for each country
+    (datapoint in the scatterplot) about the employmentrate, the personal earnings
+    and the long term unemploymentrate to show the differenes between men and women.
+</div>
+<div class="container" id="story">
+  <br>
+  <br>
+  <h1 class="title"> Storytelling</h1>
+  <p> Europe is back in the game. Having suffered the worst financial and economic
+      crisis of the last 80 years, Europe took decisive action to improve its public
+      finances, push through deep reforms, and establish new institutions to manage
+      and prevent crises better. The changes are structural, long-lasting and make
+      Europe more competitive. Europe is stronger, better equipped and in the midst
+      of ambitious new financial and economic initiatives.
+  </p>
+  <p>
+    The global crisis hit Europe twice. The first strike came from abroad in 2007.
+    In the United States, markets had ignored credit risk in subprime mortgage markets.
+    A lack of financial supervision allowed opaque financial instruments to flourish,
+    aggravating the problem. As a result, the U.S. banking system underwent a dramatic
+    bail-out in September 2008. European banks suffered in the fallout. Two years later,
+    a second crisis erupted in the euro area. Years of unsustainable government policies
+    had caused deficits and debt burdens to mushroom and bloated pre-crisis wages and
+    housing prices. As the situation worsened, Europe took courageous decisions to put
+    the continent back on firm footing<a href="https://www.weforum.org/agenda/2016/03/how-the-financial-crisis-made-europe-stronger/"> r(Janse, 2016)</a>.
+  </p>
+  <p>
+    Were these courageous decisions effective on the economic welfare of Europe?
+    Is Europe in a better economic state than in 2007? We will analyse this on the
+    basis of GDP capita index, unemplotment rate and the labour underutilization rate.
+    Because GDP growth can merely reflect a larger population, it is important to
+    account for this when analysing people’s material well-being. The unemployment
+    rate is an important indicator of economic and social well-being. These indicators
+    are a good representation of the welfare in a country. The labour underutilization
+    rate will show how much labour is neglected actually. Question which can also
+    be asked are "Is employment normally distributed between men en women? And
+    are the personal earnings equal? These kind of questions are hot topic these days.
+    In 2017 the Euopean Union stated ""
+    "
+  </p>
+  <p>
+    These kind of questions are hot topic these days.
+    In 2017 the Euopean Union stated "
+    We have come a long way in Europe with how we
+    ensure equality between women and men. Nevertheless,
+    we must be vigilant as we see that many
+    gains in this field are being put to the test. In the context of
+    persistent economic inequality and rising intolerance – both
+    online and in the public sphere – it is essential for the EU
+    to reaffirm its strong commitment to gender equality. The
+    principle of equality between women and men has been
+    enshrined in the EU treaties already since 1957. Since then,
+    a lot of progress has been made, women have reaped the
+    benefits of education and significantly increased their presence
+    on the labour market <a href="https://eeas.europa.eu/sites/eeas/files/2017_report_equality_women_men_in_the_eu_en.pdf"> ( European Union, 2017)</a>".
+  </p>
+  <p>
+    But is this really the case? What is the position of women on the labour market
+    in the years 2015 and 2016? How big are the differences between men and women
+    on the labour market? With the grouped bar chart we analyse the differences of
+    the personal earnings between men and women. Also we look at how much men/women
+    are actually employed and if they get unemployed, how many people will be
+    unemployed on the long term? And is there also a difference between men and women?
 </div>
 <div class="container" id="indicator">
   <br>
   <br>
   <h1 class="title"> Indicator descriptions</h1>
+  <p style="font-style: italic;">
+    The source for the description of the variables originate from the same source
+    as the datasets.
+  </p>
   <div class="container">
     <div class="row">
       <div class="col-sm-4">
-        <h3 style="">GDP per capita index (colored and adjusted in size)</h3>
+        <h3 class="bullets">GDP per capita index (colored and adjusted in size)</h3>
         <p>
           GDP per capita index (colored and adjusted size): This indicator shows Gross Domestic Product (GDP),
           adjusted for price changes, per member of the population, indexed to 2007
@@ -61,7 +190,7 @@
       </p>
       </div>
       <div class="col-sm-4">
-        <h3>Unemployment rate (x-axis)</h3>
+        <h3 class="bullets">Unemployment rate (x-axis)</h3>
         <p>
           Unemployment rate is the number of unemployed people as
           a percentage of the labour force, where the latter consists of the unemployed
@@ -76,7 +205,7 @@
       </p>
       </div>
       <div class="col-sm-4">
-        <h3>Labour underutilization rate (y-axis)</h3>
+        <h3 class="bullets">Labour underutilization rate (y-axis)</h3>
         <p>
           The broader labour underutilisation rate includes
           in the numerator the unemployed, the marginally attached (i.e. persons not
@@ -92,7 +221,7 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-4">
-        <h3>Employment rate</h3>
+        <h3 class="bullets">Employment rate</h3>
         <p>
           It is the number of employed persons aged 15 to 64 over the population
           of the same age. Employed people are those aged 15 or more who report
@@ -101,7 +230,7 @@
         </p>
       </div>
       <div class="col-sm-4">
-        <h3>Long-term unemployment rate</h3>
+        <h3 class="bullets">Long-term unemployment rate</h3>
         <p>
           This indicator refers to the number of persons who have been unemployed
           for one year or more as a percentage of the labour force (the sum of
@@ -111,7 +240,7 @@
         </p>
       </div>
       <div class="col-sm-4">
-        <h3>Personal earnings</h3>
+        <h3 class="bullets">Personal earnings</h3>
         <p>
           This indicator refers to the average annual wages per full-time
           equivalent dependent employee, which are obtained by dividing the
@@ -132,18 +261,118 @@
   <br>
   <br>
   <h1 class="title"> Visualisations</h1>
+  <p style="font-style: italic;"> Here you can choose the years 2015 and 2016
+    to visualize in the scatterplot. If you click on the datapoints in the
+    scatterplot there will appear a grouped bar chart of that country. To see
+    the grouped barchart, click a datapoint and scroll down.
+  </p>
+  <br>
   <button type="button" id="data_2015" class="btn">data 2015</button>
   <button type="button" id="data_2016" class="btn">data 2016</button>
-</div>
-<div class="container" id="story">
-  <br>
-  <br>
-  <h1 class="title"> Storytelling</h1>
 </div>
 <div class="container" id="design">
   <br>
   <br>
   <h1 class="title"> Design choices</h1>
+    <div class="row">
+      <div class="col-sm-4">
+        <ul>
+          <h1 class="bullets">Website</h1>
+          <li>  The red titles are for clarity, so the user will easily distinguish
+                the different sections on the website.</li>
+          <li>  I have included a cover photo to give the website a extra touch
+                and that you can see i have made an effort to make it look
+                good.</li>
+          <li>  The navbar is designed to make the website more user friendly.
+                When the user wants to skip to a section of choice it is
+                possible.</li>
+          <li>  The columns are used to give the user a good overview of what
+                content there is available at the section.</li>
+          <li>  I have used a black border for the title of the website because
+                it made the text clearer with the coverphoto on the background.</li>
+        </ul>
+      </div>
+      <div class="col-sm-4">
+        <ul>
+          <h1 class="bullets">Scatterplot</h1>
+          <li>  I have chosen for a really simple lay out, so the user will directly
+                directly understand the scatterplot</li>
+          <li>  I have made the buttons for the switch between the years 2015 and
+                2016 quite big. This is because the user will see directly which
+                years can be represented in the data visualizations.</li>
+          <li>  To give the user a good indication of the differenes in GDP per
+                capita index, I have tryed to show this using different sizes for
+                the radius for each country. For extra visualization I have
+                substantiated this with colors, so there will be no uncertainties
+                about the level of the GDP of the country in question.</li>
+          <li>  I have chosen the most simple and known color palette. The contrast
+                of each color is very clear and the meaning of it speaks for it
+                self actually. Besides that, I have included a legend, which helps
+                the user understand the different meanings of the colors.</li>
+          <li>  The tooltip has a background, because otherwise sometimes there
+                will be a datapoint or text behind the tooltip and without
+                background color the text is not readable. The tooltip shows a
+                box with the real numbers of the three variables which are
+                visualized in the scatter.</li>
+          <li>  The interaction is that users can click on a datapoint (which
+                represents a country) and visualize the differences between men
+                and women of a certain variables. This is a very hot topic these days,
+                genderequality. I was interested if these differences between men
+                and women correlated with the welfare of a country.</li>
+        </ul>
+      </div>
+      <div class="col-sm-4">
+        <ul>
+          <h1 class="bullets">Grouped barchart</h1>
+          <li>  For the grouped bar chart I have used the same design choices as
+                as for the scatterplot.</li>
+          <li>  The title of the grouped barchart is also interactive, it shows
+                the country, which data is displayed in the grouped bargraph so
+                there can not be any doubt about which country is displayed.</li>
+          <li>  I have chosen the most basic colors to visualize the variables of
+                the groups. I think, the simpler your design is for the visualisation
+                of data, the better you can understand it.</li>
+        </ul>
+      </div>
+    </div>
 </div>
-  </body>
+<div class="container" id="data">
+  <br>
+  <br>
+  <h1 class="title"> Dataset descriptions</h1>
+  <div class="container">
+    <div>
+        <h1 class="bullets"> Dataset scatterplot</h1>
+        <p>
+          This dataset includes annual and quarterly detailed data on
+          financial assets such as investment funds shares, net equity of households
+          in life insurance reserves and net equity of households in pension funds
+          reserves and financial liabilities such as short-term and long-term loans
+          as well as some non-financial assets. Data are internationally comparable
+          and mainly compiled following the System of National Accounts (SNA).
+        </p>
+      </p>
+      </div>
+      <div>
+        <h1 class="bullets"> Dataset grouped barchart</h1>
+        <p>
+            Your Better Life Index aims to involve citizens in the debate on
+            measuring the well-being of societies, and to empower them to become
+            more informed and engaged in the policy-making process that shapes all
+            our lives. Each of the 11 topics of the Index is currently based on one
+            to three indicators. Within each topic, the indicators are averaged with
+            equal weights. The indicators have been chosen on the basis of a number
+            of statistical criteria such as relevance (face-validity, depth, policy
+            relevance) and data quality (predictive validity, coverage, timeliness,
+            cross-country comparability etc.) and in consultation with OECD member
+            countries. These indicators are good measures of the concepts of well-being,
+            in particular in the context of a country comparative exercise. Other
+            indicators will gradually be added to each topic.
+        </p>
+      </p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
 </html>
